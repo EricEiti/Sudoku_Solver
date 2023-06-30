@@ -10,7 +10,30 @@ def find_next_empty(puzzle):
 def is_valid(puzzle, guess, row, col):
     # figures out whether the guess at the row/col of the puzzle is a valid guess
     # returns True or False
-    pass
+
+    # let's start with the row:
+    row_vals = puzzle[row]
+    if guess in row_vals:
+        return False
+    
+    # now the column:
+    # col_vals = []
+    # for i in range(9):
+    #     cols_vals.append(puzzle[i][col])
+    col_vals = [puzzle[i][col] for i in range(9)]
+    if guess in col_vals:
+        return False
+    
+    # and then the square
+    row_start = (row // 3) * 3
+    col_start = (col // 3) * 3
+
+    for r in range(row_start, row_start + 3):
+        for c in range(col_start, col_start + 3):
+            if puzzle[r][c] == guess:
+                return False
+    # if we get here, these checks pass        
+    return True
 
 ############################################################
 # SOLVER IMPLEMENTATION
@@ -22,12 +45,21 @@ def solve_sudoku(puzzle):
     # return solution
 
     # step 1: choose somewhere on the puzzle to make a guess
-    row, col = find_next_empty(puzzle):
+    row, col = find_next_empty(puzzle)
+
     # step 1.1: if there's nowhere left, then we're done because we only allowed valid inputs
+    if row is None:
+        return True
+    
     # step 2: if there is a place to put a number, then make a guess between 1 and 9
-    # step 3: check if this is a valid guess
-    # step 3.1: if this is a valid guess, then place it at that spot on the puzzle
-    # step 4: then we recursively call our solver!
-    # step 5: it not valid or if nothing gets returned true, then we need to backtrack and try a new number
+    for guess in range(1,10):
+        # step 3: check if this is a valid guess
+        if is_valid(puzzle, guess, row, col):
+            # step 3.1: if this is a valid guess, then place it at that spot on the puzzle
+            puzzle[row][col] = guess
+            # step 4: then we recursively call our solver!
+            if solve_sudoku(puzzle):
+                return True
+        
+        # step 5: it not valid or if nothing gets returned true, then we need to backtrack and try a new number
     # step 6: if none of the numbers that we try work, then this puzzle is UNSOLVABLE!!
-    pass
