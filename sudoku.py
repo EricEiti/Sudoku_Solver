@@ -1,7 +1,11 @@
 def find_next_empty(puzzle):
     # finds the next row, col on puzzle that's not filled yet --> we represent these with -1
     # returns a row, col tuple (or (None, None) if there is none)
-    pass
+    for r in range(9):
+        for c in range(9):
+            if puzzle[r][c] == -1:
+                return r, c       
+    return None, None # if no spaces in the puzzle are empty (-1)
 
 def is_valid(puzzle, guess, row, col):
     # figures out whether the guess at the row/col of the puzzle is a valid guess
@@ -18,6 +22,7 @@ def solve_sudoku(puzzle):
     # return solution
 
     # step 1: choose somewhere on the puzzle to make a guess
+    row, col = find_next_empty(puzzle):
     # step 1.1: if there's nowhere left, then we're done because we only allowed valid inputs
     # step 2: if there is a place to put a number, then make a guess between 1 and 9
     # step 3: check if this is a valid guess
